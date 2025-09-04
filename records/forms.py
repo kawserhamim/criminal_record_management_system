@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 # Make sure you import your custom Profile model
-
+from .models import Profile
 
 class SignUpForm(UserCreationForm):
     # These fields will be displayed on the form
@@ -17,7 +17,7 @@ class SignUpForm(UserCreationForm):
         # Only include the fields that exist on the User model
         fields = UserCreationForm.Meta.fields + ('first_name', 'last_name', 'email')
 
-    # This method runs after the form is submitted and validated
+    # This method runs after the form is submitted and validated 
     def save(self, commit=True):
         # First, save the basic user information (username, password)
         user = super().save(commit=False)
@@ -26,6 +26,7 @@ class SignUpForm(UserCreationForm):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
+       
         
         if commit:
             # Save the user to the database
