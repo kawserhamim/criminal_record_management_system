@@ -1,24 +1,29 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib import messages
 from .forms import SignUpForm
 from django.contrib.auth import login
-from django.contrib.auth import authenticate, logout as auth_logout
+from django.contrib.auth import authenticate, logout 
 from django.contrib.auth.forms import UserCreationForm
 from .forms import LoginForm
 
 # Create your views here.
 def Signup(request):
-    form = UserCreationForm()
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit = False)
+            # Set additional fields
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.email = form.cleaned_data.get('email')
+            user.save()
+            
             messages.success(request, 'Account created successfully!')
-            return HttpResponse('ok')
+            return redirect('Login')
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, 'records/signup.html', {'form': form})
 def Login(request):
     form = LoginForm()
@@ -31,10 +36,14 @@ def Login(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f'You are now logged in as {username}.')
-                return HttpResponse('ok')
+                return redirect('welcome')
             else:
                 form=LoginForm()
     return render(request, 'records/login.html', {'form': form}) 
 
 def Logout(request):    
     return HttpResponse('ok')
+
+
+def welcome(request):
+    return render(request,'records/welcome.html')
