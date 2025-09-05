@@ -55,7 +55,7 @@ def createlist(request):
         form = forms.ListForm(request.POST,request.FILES)
         if form.is_valid():
             create = form.save(commit=False)
-            create.user = request.user
+            create.created_by = request.user
             create.save()
             return redirect('showlist')
         else:
@@ -73,13 +73,17 @@ def edit(request,id ):
     if request.method == 'POST':
         form = forms.ListForm(request.POST,request.FILES,instance=xx)
         if form.is_valid():
+            form.save()
             return redirect ('showlist')
         else :
             form = forms.ListForm(instance=xx)
             return render(request,'records/createlist.html',{'form':form})
     else:
         form = forms.ListForm(instance=xx)
-        x = 1 
-        return render(request,'records/createlist.html',{'form':form, 'x' : x })
+        return render(request,'records/createlist.html',{'form':form })
         
 
+def delete(request):
+    xx = get_object_or_404(models.List,pk=id, created_by = request.user)
+    xx.delete()
+    return redirect('showlist')

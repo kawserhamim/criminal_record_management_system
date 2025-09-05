@@ -44,7 +44,7 @@
                     <td>{{ record.nationality }}</td>
                     <td>{{ record.national_id }}</td>
                     <td>{{ record.crime_details }}</td>
-                    <td>officer {{ record.created_by.first_name }}</td>
+                    <td>officer {{ record.created_by.username }}</td>
                     <td><a href="{% url 'edit' record.id %}" class="btn btn-warning btn-sm">Edit</a></td>
                     <td><a href="/" class="btn btn-danger btn-sm">Delete</a></td>
                 </tr>
