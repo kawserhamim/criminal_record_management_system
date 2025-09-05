@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from django import forms
 from django.shortcuts import render, redirect   
 from django.contrib import messages
-
+from . import models
+from .models import List
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=15,required=True
@@ -47,9 +48,9 @@ class LoginForm(AuthenticationForm):
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Password'}))
     
-from . import models
+
 class ListForm(forms.ModelForm):
    class Meta:
-      model = models.List
+      model = List
       fields = '__all__'
    

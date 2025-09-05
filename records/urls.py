@@ -10,6 +10,7 @@ urlpatterns = [
     path('Logout/', views.Logout, name='Logout'),
     path('welcome/', views.welcome, name='welcome'),
     path('createlist/', views.createlist, name='createlist'),
-    path('showlist/', views.createlist, name='showlist'),
+    path('showlist/', views.showlist, name='showlist'),
+    path('edit/<int:id>/', views.edit, name='edit'),
     
 ]
