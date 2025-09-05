@@ -7,7 +7,7 @@ from django.contrib.auth import login
 from django.contrib.auth import authenticate, logout 
 from django.contrib.auth.forms import UserCreationForm
 from .forms import LoginForm
-
+from .forms import ListForm
 # Create your views here.
 def Signup(request):
     if request.method == 'POST':
@@ -47,3 +47,17 @@ def Logout(request):
 
 def welcome(request):
     return render(request,'records/welcome.html')
+
+
+def createlist(request):
+    form = ListForm()
+    if request.method == 'POST':
+        form = ListForm(request.POST,request.FILES)
+        if form.is_valid():
+            create = form.save(commmit=False)
+            create.user = request.user
+            create.save()
+            return redirect('showlist')
+        else:
+            form = ListForm()
+    return render(request,'records/createlist')

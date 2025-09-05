@@ -46,3 +46,10 @@ class LoginForm(AuthenticationForm):
         attrs={'class': 'form-control', 'placeholder': 'Username'}))
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'class': 'form-control', 'placeholder': 'Password'}))
+    
+from . import models
+class ListForm(forms.ModelForm):
+   class Meta:
+      model = models.List
+      fields = '__all__'
+   
