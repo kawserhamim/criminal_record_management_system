@@ -27,7 +27,6 @@ def Login(request):
             department = form.cleaned_data.get('department')
             badge_number = form.cleaned_data.get('badge_number')
             remember_me = form.cleaned_data.get('remember_me')
-
             user = authenticate(username=username, password=password)
             
             if user is not None:
