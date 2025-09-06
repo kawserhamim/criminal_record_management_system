@@ -128,3 +128,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_URL = 'Signup'   # redirect to login page if not authenticated
+LOGIN_REDIRECT_URL = 'welcome'  # where to go after successful login
+LOGOUT_REDIRECT_URL = 'Login'  

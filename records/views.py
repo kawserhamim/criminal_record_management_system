@@ -7,7 +7,7 @@ from django.contrib.auth import login
 from django.contrib.auth import authenticate, logout 
 from django.contrib.auth.forms import UserCreationForm
 from . import forms,models
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def Signup(request):
     if request.method == 'POST':
@@ -48,7 +48,7 @@ def Logout(request):
 def welcome(request):
     return render(request,'records/welcome.html')
 
-
+@login_required
 def createlist(request):
     form = forms.ListForm()
     if request.method == 'POST':
@@ -63,7 +63,7 @@ def createlist(request):
     else :
         form = forms.ListForm()
         return render(request,'records/createlist.html',{'form':form})
-    
+@login_required    
 def showlist(request):
     lists = models.List.objects.all()   # fetch all List objects
     return render(request, 'records/showlist.html', {'lists': lists})
@@ -83,7 +83,7 @@ def edit(request,id ):
         return render(request,'records/createlist.html',{'form':form })
         
 
-def delete(request):
+def delete(request, id):
     xx = get_object_or_404(models.List,pk=id, created_by = request.user)
     xx.delete()
     return redirect('showlist')
