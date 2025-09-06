@@ -13,5 +13,7 @@ urlpatterns = [
     path('showlist/', views.showlist, name='showlist'),
     path('edit/<int:id>/', views.edit, name='edit'),
     path('delete/<int:id>/', views.delete, name='delete'),
+    path('search/', views.search, name='search'),
+    path('mycreate/', views.mycreate, name='mycreate'),
     
 ]

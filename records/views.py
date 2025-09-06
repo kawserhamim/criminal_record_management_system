@@ -41,8 +41,9 @@ def Login(request):
                 form=forms.LoginForm()
     return render(request, 'records/login.html', {'form': form}) 
 
-def Logout(request):    
-    return HttpResponse('ok')
+def Logout(request):
+    logout(request)
+    return redirect('Login') 
 
 
 def welcome(request):
@@ -68,6 +69,11 @@ def showlist(request):
     lists = models.List.objects.all()   # fetch all List objects
     return render(request, 'records/showlist.html', {'lists': lists})
 
+@login_required    
+def mycreate(request):
+    lists = models.List.objects.filter(created_by=request.user)   # fetch all List objects
+    return render(request, 'records/personal.html', {'lists': lists})
+
 def edit(request,id ):
     xx =  get_object_or_404(models.List, pk=id, created_by=request.user)
     if request.method == 'POST':
@@ -87,3 +93,26 @@ def delete(request, id):
     xx = get_object_or_404(models.List,pk=id, created_by = request.user)
     xx.delete()
     return redirect('showlist')
+
+from django.shortcuts import render
+from . import models
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def search(request):
+    x = 0 
+    query = request.GET.get("q", "").strip()  # safely get query, default empty
+    lists = models.List.objects.filter(created_by=request.user)  # base queryset
+
+    if query:
+        x = 1 
+        lists = lists.filter(name__icontains=query)  # filter only if query exists
+    context = {
+        "lists": lists,
+        "query": query
+    }
+    return render(request, "records/search.html", context)
+
+
+    
+    
